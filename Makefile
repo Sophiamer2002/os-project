@@ -36,7 +36,7 @@ $(DIRS):
 
 # The following are for project part11
 
-$(TEMP_DIR)/part11: $(TEMP_DIR) $(wildcard $(GO_DIR)/part11/*.go)
+$(TEMP_DIR)/part11: $(wildcard $(GO_DIR)/part11/*.go)
 	cd $(GO_DIR)/part11 && go mod tidy && go build -o $(TEMP_DIR)/part11
 
 define PART11_EXPERIMENT_TARGET = 

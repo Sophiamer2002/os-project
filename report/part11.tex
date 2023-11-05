@@ -1,0 +1,134 @@
+\documentclass{article}
+\usepackage{amsmath,amsfonts,amsthm,amssymb}
+\usepackage{setspace}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{extramarks}
+\usepackage{chngpage}
+\usepackage{soul,color}
+\usepackage{graphicx,float,wrapfig}
+\usepackage{CJK}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{indentfirst}
+\usepackage[ruled]{algorithm2e}
+\newcommand{\Class}{Project1Part1.1}
+\newcommand{\ClassInstructor}{Ran Duan}
+
+
+% Homework Specific Information. Change it to your own
+\newcommand{\Title}{Project1Part1}
+\newcommand{\DueDate}{Nov 5th, 2023}
+\newcommand{\StudentName}{Lingji Tu}
+\newcommand{\StudentClass}{YaoClass 00}
+\newcommand{\StudentNumber}{2010011011}
+
+% In case you need to adjust margins:
+\topmargin=-0.45in      %
+\evensidemargin=0in     %
+\oddsidemargin=0in      %
+\textwidth=6.5in        %
+\textheight=9.0in       %
+\headsep=0.25in         %
+
+% Setup the header and footer
+\pagestyle{fancy}                                                       %
+\lhead{Chengda Lu}                                                 %
+\chead{\Title}  %
+\rhead{\firstxmark}                                                     %
+\lfoot{\lastxmark}                                                      %
+\cfoot{}                                                                %
+\rfoot{Page\ \thepage}                          %
+\renewcommand\headrulewidth{0.4pt}                                      %
+\renewcommand\footrulewidth{0.4pt}                                      %
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Some tools
+\newcommand{\enterProblemHeader}[1]{\nobreak\extramarks{#1}{#1 continued on next page\ldots}\nobreak%
+                                    \nobreak\extramarks{#1 (continued)}{#1 continued on next page\ldots}\nobreak}%
+\newcommand{\exitProblemHeader}[1]{\nobreak\extramarks{#1 (continued)}{#1 continued on next page\ldots}\nobreak%
+                                   \nobreak\extramarks{#1}{}\nobreak}%
+
+\newcommand{\homeworkProblemName}{}%
+\newcounter{homeworkProblemCounter}%
+\newenvironment{homeworkProblem}[1][Problem \arabic{homeworkProblemCounter}]%
+  {\stepcounter{homeworkProblemCounter}%
+   \renewcommand{\homeworkProblemName}{#1}%
+   \section*{\homeworkProblemName}%
+   \enterProblemHeader{\homeworkProblemName}}%
+  {\exitProblemHeader{\homeworkProblemName}}%
+
+\newcommand{\homeworkSectionName}{}%
+\newlength{\homeworkSectionLabelLength}{}%
+\newenvironment{homeworkSection}[1]%
+  {% We put this space here to make sure we're not connected to the above.
+
+   \renewcommand{\homeworkSectionName}{#1}%
+   \settowidth{\homeworkSectionLabelLength}{\homeworkSectionName}%
+   \addtolength{\homeworkSectionLabelLength}{0.25in}%
+   \changetext{}{-\homeworkSectionLabelLength}{}{}{}%
+   \subsection*{\homeworkSectionName}%
+   \enterProblemHeader{\homeworkProblemName\ [\homeworkSectionName]}}%
+  {\enterProblemHeader{\homeworkProblemName}%
+
+   % We put the blank space above in order to make sure this margin
+   % change doesn't happen too soon.
+   \changetext{}{+\homeworkSectionLabelLength}{}{}{}}%
+
+\newcommand{\Answer}{\ \\\textbf{Answer:} }
+\newcommand{\Acknowledgement}[1]{\ \\{\bf Acknowledgement:} #1}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Make title
+\title{\textmd{\bf \Class}\\\normalsize\vspace{0.1in}\small{Due\ on\ Nov. 5, 2022}}
+\date{}
+\author{\textbf{Yiying Wang}\ \ 2020011604 \textbf{Fangyan Shi}\ \ 2021010892  \textbf{Chengda Lu}\ \ 2021010899}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\DATADIR}{} % This is to be filled by makefile
+
+\begin{document}
+\begin{spacing}{1.1}
+\maketitle \thispagestyle{empty}
+\section*{Task2: Experiments and observations}
+\subsection*{1)}
+\\\includegraphics[width=14cm,height=7cm]{\DATADIR/part11_throughput_fig.png}
+\\\indent As the figure shows, when we increase the number of threads, the throughput of every thread will decrease. And the throughput of every thread  will be larger when the capacity increases. However, maybe since the shake of one time enqueue or dequeue which may because the time is too short, there are some opposite cases in the graph.
+
+\subsection*{2)}
+\indent We have drawed the graph in all conditions with cdf. We list some of them as following (The concrete details can be found in "temp/fig" and we list the condition when "cpus=1"):
+\\\includegraphics[width=8cm,height=5cm]{\DATADIR/part11_cap_1_threads_1.png}
+\includegraphics[width=8cm,height=5cm]{\DATADIR/part11_cap_1_threads_2.png}
+\newpage
+\\\includegraphics[width=8cm,height=5cm]{\DATADIR/part11_cap_1_threads_3.png}
+\includegraphics[width=8cm,height=5cm]{\DATADIR/part11_cap_1_threads_4.png}
+\\\includegraphics[width=8cm,height=5cm]{\DATADIR/part11_cap_1_threads_5.png}
+\includegraphics[width=8cm,height=5cm]{\DATADIR/part11_cap_1_threads_6.png}
+
+\subsection*{3)}
+\\We have do the experiments including the throughput in the same graph as before. We can find that when we increase the capacity, the throughput increase in general. And it has some opposite cases which maybe because one time enqueue or dequeue is too short. And it causes some shakes. 
+\\\indent As for the relationship between the capacity and the latency, we choose the following graphs to compare.
+\\\includegraphics[width=8cm,height=5cm]{\DATADIR/part11_cap_1_threads_1.png}
+\includegraphics[width=8cm,height=5cm]{\DATADIR/part11_cap_2_threads_1.png}
+\newpage
+\\\includegraphics[width=8cm,height=5cm]{\DATADIR/part11_cap_4_threads_1.png}
+\includegraphics[width=8cm,height=5cm]{\DATADIR/part11_cap_8_threads_1.png}
+\\\includegraphics[width=8cm,height=5cm]{\DATADIR/part11_cap_16_threads_1.png}
+\includegraphics[width=8cm,height=5cm]{\DATADIR/part11_cap_32_threads_1.png}
+\\\indent We can find that when we increase the capacity, the latency becomes larger and larger which is because the parallel efficiency enhances.
+
+\subsection*{4)}
+\indent In general, we find four characteristics in these figures:
+\begin{itemize}
+    \item When we increase the number of threads, the throughput decreases which may because after we enhance the parallel efficiency, the throughput of one item (enqueue or dequeue) decreases. (And corresponding latency increases.)
+    \item When we increase the number of cpus, we get more computation at one time which means at same time we can tackle more thing. So the throughput increases.
+    \item When we increase the number of threads, the parallel efficiency enhances, which makes the latency of one item increases. So the latency becomes larger. And according to the figures, the curve becomes more smooth which is also because the enhancement of the parallel efficiency.
+    \item When we increase the number of cpus, we get more computation. So the latency will decrease.
+\end{itemize}
+
+
+\end{spacing}
+\end{document}

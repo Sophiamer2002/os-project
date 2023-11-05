@@ -12,4 +12,13 @@ args = parser.parse_args()
 
 data = csv.reader(open(args.data_file, 'r'), delimiter=',')
 
-# TODO
+# The first plot
+
+fig, ax = plt.subplots(figsize=(20, 10))
+ax.set_ylabel('Work Time(s)')
+ax.set_xlabel('Number of Threads')
+
+# read the first line
+line = next(data)
+
+

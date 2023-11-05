@@ -1,0 +1,133 @@
+\documentclass{article}
+\usepackage{amsmath,amsfonts,amsthm,amssymb}
+\usepackage{setspace}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{extramarks}
+\usepackage{chngpage}
+\usepackage{soul,color}
+\usepackage{graphicx,float,wrapfig}
+\usepackage{CJK}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{indentfirst}
+\usepackage[ruled]{algorithm2e}
+\newcommand{\Class}{Project1Part1.2}
+\newcommand{\ClassInstructor}{Ran Duan}
+
+
+% Homework Specific Information. Change it to your own
+\newcommand{\Title}{Project1Part1}
+\newcommand{\DueDate}{Nov. 5, 2023}
+\newcommand{\StudentName}{Lingji Tu}
+\newcommand{\StudentClass}{YaoClass 00}
+\newcommand{\StudentNumber}{2010011011}
+
+% In case you need to adjust margins:
+\topmargin=-0.45in      %
+\evensidemargin=0in     %
+\oddsidemargin=0in      %
+\textwidth=6.5in        %
+\textheight=9.0in       %
+\headsep=0.25in         %
+
+% Setup the header and footer
+\pagestyle{fancy}                                                       %
+\lhead{Chengda Lu}                                                 %
+\chead{\Title}  %
+\rhead{\firstxmark}                                                     %
+\lfoot{\lastxmark}                                                      %
+\cfoot{}                                                                %
+\rfoot{Page\ \thepage}                          %
+\renewcommand\headrulewidth{0.4pt}                                      %
+\renewcommand\footrulewidth{0.4pt}                                      %
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Some tools
+\newcommand{\enterProblemHeader}[1]{\nobreak\extramarks{#1}{#1 continued on next page\ldots}\nobreak%
+                                    \nobreak\extramarks{#1 (continued)}{#1 continued on next page\ldots}\nobreak}%
+\newcommand{\exitProblemHeader}[1]{\nobreak\extramarks{#1 (continued)}{#1 continued on next page\ldots}\nobreak%
+                                   \nobreak\extramarks{#1}{}\nobreak}%
+
+\newcommand{\homeworkProblemName}{}%
+\newcounter{homeworkProblemCounter}%
+\newenvironment{homeworkProblem}[1][Problem \arabic{homeworkProblemCounter}]%
+  {\stepcounter{homeworkProblemCounter}%
+   \renewcommand{\homeworkProblemName}{#1}%
+   \section*{\homeworkProblemName}%
+   \enterProblemHeader{\homeworkProblemName}}%
+  {\exitProblemHeader{\homeworkProblemName}}%
+
+\newcommand{\homeworkSectionName}{}%
+\newlength{\homeworkSectionLabelLength}{}%
+\newenvironment{homeworkSection}[1]%
+  {% We put this space here to make sure we're not connected to the above.
+
+   \renewcommand{\homeworkSectionName}{#1}%
+   \settowidth{\homeworkSectionLabelLength}{\homeworkSectionName}%
+   \addtolength{\homeworkSectionLabelLength}{0.25in}%
+   \changetext{}{-\homeworkSectionLabelLength}{}{}{}%
+   \subsection*{\homeworkSectionName}%
+   \enterProblemHeader{\homeworkProblemName\ [\homeworkSectionName]}}%
+  {\enterProblemHeader{\homeworkProblemName}%
+
+   % We put the blank space above in order to make sure this margin
+   % change doesn't happen too soon.
+   \changetext{}{+\homeworkSectionLabelLength}{}{}{}}%
+
+\newcommand{\Answer}{\ \\\textbf{Answer:} }
+\newcommand{\Acknowledgement}[1]{\ \\{\bf Acknowledgement:} #1}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Make title
+\title{\textmd{\bf \Class}\\\normalsize\vspace{0.1in}\small{Due\ on\ Nov. 5, 2022}}
+\date{}
+\author{\textbf{Yiying Wang}\ \ 2020011604 \textbf{Fangyan Shi}\ \ 2021010892  \textbf{Chengda Lu}\ \ 2021010899}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\begin{spacing}{1.1}
+\maketitle \thispagestyle{empty}
+\section*{Task2: Performance evaluation}
+\indent We list the data as the following table:
+\\\begin{tabular}{ccrl} \hline % 其中，|c|表示文本居中，文本两边有竖直表线。
+\textbf{CPUs} & \textbf{Capacity} & \textbf{Threads} & \textbf{Time}  \\ \hline
+1 & 1 & 1 & 29.53 \\\hline
+24 & 100 & 1 & 34.5 \\\hline
+24 & 100 & 2 & 17.83 \\\hline
+24 & 100 & 4 & 8.63 \\\hline
+24 & 100 & 6 & 5.71 \\\hline
+24 & 100 & 8 & 4.43 \\\hline
+24 & 100 & 10 & 3.81 \\\hline
+24 & 100 & 16 & 3.19 \\\hline
+24 & 100 & 24 & 2.98 \\\hline
+1 & 100 & 8 & 29.84 \\\hline
+2 & 100 & 8 & 15.52 \\\hline
+\end{tabular}
+$\ \ \ \ \ \ \ \ \ \ $
+\begin{tabular}{ccrl} \hline % 其中，|c|表示文本居中，文本两边有竖直表线。
+\textbf{CPUs} & \textbf{Capacity} & \textbf{Threads} & \textbf{Time}  \\ \hline
+4 & 100 & 8 & 8.03 \\\hline
+6 & 100 & 8 & 5.92 \\\hline
+8 & 100 & 8 & 4.75 \\\hline
+10 & 100 & 8 & 4.26 \\\hline
+16 & 100 & 8 & 4.04 \\\hline
+24 & 100 & 8 & 4.40 \\\hline
+24 & 1 & 24 & 3.01 \\\hline
+24 & 10 & 24 & 3.00 \\\hline
+24 & 100 & 24 & 3.00 \\\hline
+24 & 1000 & 24 & 2.99 \\\hline
+\end{tabular}
+\\
+\\\indent In this table, we can get following $3$ characteristics:
+\begin{itemize}
+    \item When we fix the cpus and capacity, and change the number of threads, the time sharply decreases. That's because threads almost determines the Parallel efficiency. (In our experiments, the computation resource is enough.)
+    \item When we fix the cpus and the number of threads, and change the capacity, the time almost fixes. That's because the task is direct and simple, and the computation resource is enough in our experiments.
+    \item When we fix the capacity and the threads, and change the cpus, the time also decreases sharply. That's because the computation resource is the determined factor of the time. Even if the number of threads is appropriate, the computation resource is lack which will cause the long time.
+\end{itemize}
+
+\end{spacing}
+\end{document}

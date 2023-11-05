@@ -3,6 +3,7 @@ TARGETS := part11 part12
 CURDIR := $(shell pwd)
 GO_DIR := $(CURDIR)/go-workspace
 PY_DIR := $(CURDIR)/py-scripts
+TEX_DIR := $(CURDIR)/report
 
 IMAGE_NET_TEST_DIR := /tiny-imagenet-200/test/images
 
@@ -13,15 +14,17 @@ IMG_DIR := /osdata/osgroup4/generated_imgs
 
 DIRS := $(TEMP_DIR) $(DATA_DIR) $(FIG_DIR) $(IMG_DIR)
 
+TEX_FLAGS := -synctex=1 -interaction=nonstopmode -file-line-error -output-directory=$(TEMP_DIR)
+
 empty :=
 space := $(empty) $(empty)
 comma := ,
 
 all: $(TARGETS)
 
-part11: 
+part11: $(CURDIR)/part11.pdf
 
-part12: 
+part12: $(CURDIR)/part12.pdf
 
 clean:
 	rm -rf $(TEMP_DIR)
@@ -69,10 +72,32 @@ define PART11_EXPERIMENT_CDF_PLOT_TARGET =
 $(FIG_DIR)/part11_cap_$(1)_threads_$(2)_cdf.png
 endef
 
-define PART11_EXPERIMENT_CDF_PLOT = 
+define PART11_EXPERIMENT_CDF_PLOT =
 $(call PART11_EXPERIMENT_CDF_PLOT_TARGET,$(1),$(2)): $(call PART11_EXPERIMENT_TARGET,$(1),$(2)) $(FIG_DIR)
-	python3 $(PY_DIR)/plot-cdf.py --data-file $< --out-file $@
+	python3 $(PY_DIR)/plot-cdf.py --data-file $(call PART11_EXPERIMENT_TARGET,$(1),$(2))\
+		--out-file $(call PART11_EXPERIMENT_CDF_PLOT_TARGET,$(1),$(2)) --cap $(1) --threads $(2)
 endef
+
+$(foreach log_cap,$(shell seq 0 $(LOG_CAP)),\
+	$(foreach threads,$(shell seq 1 $(THREADS)),\
+		$(eval $(call PART11_EXPERIMENT_CDF_PLOT,$(shell echo "2^$(log_cap)" | bc),$(threads)))\
+	)\
+)
+
+CDF_FIG_TARGETS := \
+$(foreach log_cap,$(shell seq 0 $(LOG_CAP)),\
+	$(foreach threads,$(shell seq 1 $(THREADS)),\
+		$(call PART11_EXPERIMENT_CDF_PLOT_TARGET,$(shell echo "2^$(log_cap)" | bc),$(threads))\
+	)\
+)
+
+$(CURDIR)/part11.pdf: $(TEX_DIR)/part11.tex $(CDF_FIG_TARGETS) $(FIG_DIR)/part11_throughput_fig.png
+	cp $< $(TEMP_DIR)
+	sed -i 's/\\newcommand{\\DATADIR}{}/\\newcommand{\\DATADIR}{$(subst /,\/,$(DATA_DIR))}/g' $(TEMP_DIR)/part11.tex
+	pdflatex $(TEX_FLAGS) $(TEMP_DIR)/part11.tex
+	pdflatex $(TEX_FLAGS) $(TEMP_DIR)/part11.tex
+	mv $(TEMP_DIR)/part11.pdf $@
+
 
 # The following are for part12
 
@@ -131,3 +156,9 @@ PART12_FIGS := $(FIG_DIR)/part12_threads.png $(FIG_DIR)/part12_cpus.png $(FIG_DI
 $(PART12_FIGS): $(DATA_DIR)/part12.csv $(FIG_DIR)
 	python3 $(PY_DIR)/part12-plot.py --data-file $< --out-dir $(FIG_DIR)
 	
+$(CURDIR)/part12.pdf: $(TEX_DIR)/part12.tex $(PART12_FIGS)
+	cp $< $(TEMP_DIR)
+	sed -i 's/\\newcommand{\\DATADIR}{}/\\newcommand{\\DATADIR}{$(subst /,\/,$(DATA_DIR))}/g' $(TEMP_DIR)/part12.tex
+	pdflatex $(TEX_FLAGS) $(TEMP_DIR)/part12.tex
+	pdflatex $(TEX_FLAGS) $(TEMP_DIR)/part12.tex
+	mv $(TEMP_DIR)/part12.pdf $@

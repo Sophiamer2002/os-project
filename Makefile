@@ -93,7 +93,7 @@ $(foreach log_cap,$(shell seq 0 $(LOG_CAP)),\
 
 $(CURDIR)/part11.pdf: $(TEX_DIR)/part11.tex $(CDF_FIG_TARGETS) $(FIG_DIR)/part11_throughput_fig.png
 	cp $< $(TEMP_DIR)
-	sed -i 's/\\newcommand{\\DATADIR}{}/\\newcommand{\\DATADIR}{$(subst /,\/,$(DATA_DIR))}/g' $(TEMP_DIR)/part11.tex
+	sed -i 's/\\newcommand{\\FIGDIR}{}/\\newcommand{\\FIGDIR}{$(subst /,\/,$(FIG_DIR))}/g' $(TEMP_DIR)/part11.tex
 	pdflatex $(TEX_FLAGS) $(TEMP_DIR)/part11.tex
 	pdflatex $(TEX_FLAGS) $(TEMP_DIR)/part11.tex
 	mv $(TEMP_DIR)/part11.pdf $@
@@ -158,7 +158,7 @@ $(PART12_FIGS): $(DATA_DIR)/part12.csv $(FIG_DIR)
 	
 $(CURDIR)/part12.pdf: $(TEX_DIR)/part12.tex $(PART12_FIGS)
 	cp $< $(TEMP_DIR)
-	sed -i 's/\\newcommand{\\DATADIR}{}/\\newcommand{\\DATADIR}{$(subst /,\/,$(DATA_DIR))}/g' $(TEMP_DIR)/part12.tex
+	sed -i 's/\\newcommand{\\FIGDIR}{}/\\newcommand{\\FIGDIR}{$(subst /,\/,$(FIG_DIR))}/g' $(TEMP_DIR)/part12.tex
 	pdflatex $(TEX_FLAGS) $(TEMP_DIR)/part12.tex
 	pdflatex $(TEX_FLAGS) $(TEMP_DIR)/part12.tex
 	mv $(TEMP_DIR)/part12.pdf $@

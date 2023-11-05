@@ -88,36 +88,36 @@
 \author{\textbf{Yiying Wang}\ \ 2020011604 \textbf{Fangyan Shi}\ \ 2021010892  \textbf{Chengda Lu}\ \ 2021010899}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\DATADIR}{} % This is to be filled by makefile
+\newcommand{\FIGDIR}{} % This is to be filled by makefile
 
 \begin{document}
 \begin{spacing}{1.1}
 \maketitle \thispagestyle{empty}
 \section*{Task2: Experiments and observations}
 \subsection*{1)}
-\\\includegraphics[width=14cm,height=7cm]{\DATADIR/part11_throughput_fig.png}
+\\\includegraphics[width=14cm,height=7cm]{\FIGDIR/part11_throughput_fig.png}
 \\\indent As the figure shows, when we increase the number of threads, the throughput of every thread will decrease. And the throughput of every thread  will be larger when the capacity increases. However, maybe since the shake of one time enqueue or dequeue which may because the time is too short, there are some opposite cases in the graph.
 
 \subsection*{2)}
 \indent We have drawed the graph in all conditions with cdf. We list some of them as following (The concrete details can be found in "temp/fig" and we list the condition when "cpus=1"):
-\\\includegraphics[width=8cm,height=5cm]{\DATADIR/part11_cap_1_threads_1.png}
-\includegraphics[width=8cm,height=5cm]{\DATADIR/part11_cap_1_threads_2.png}
+\\\includegraphics[width=8cm,height=5cm]{\FIGDIR/part11_cap_1_threads_1.png}
+\includegraphics[width=8cm,height=5cm]{\FIGDIR/part11_cap_1_threads_2.png}
 \newpage
-\\\includegraphics[width=8cm,height=5cm]{\DATADIR/part11_cap_1_threads_3.png}
-\includegraphics[width=8cm,height=5cm]{\DATADIR/part11_cap_1_threads_4.png}
-\\\includegraphics[width=8cm,height=5cm]{\DATADIR/part11_cap_1_threads_5.png}
-\includegraphics[width=8cm,height=5cm]{\DATADIR/part11_cap_1_threads_6.png}
+\\\includegraphics[width=8cm,height=5cm]{\FIGDIR/part11_cap_1_threads_3.png}
+\includegraphics[width=8cm,height=5cm]{\FIGDIR/part11_cap_1_threads_4.png}
+\\\includegraphics[width=8cm,height=5cm]{\FIGDIR/part11_cap_1_threads_5.png}
+\includegraphics[width=8cm,height=5cm]{\FIGDIR/part11_cap_1_threads_6.png}
 
 \subsection*{3)}
 \\We have do the experiments including the throughput in the same graph as before. We can find that when we increase the capacity, the throughput increase in general. And it has some opposite cases which maybe because one time enqueue or dequeue is too short. And it causes some shakes. 
 \\\indent As for the relationship between the capacity and the latency, we choose the following graphs to compare.
-\\\includegraphics[width=8cm,height=5cm]{\DATADIR/part11_cap_1_threads_1.png}
-\includegraphics[width=8cm,height=5cm]{\DATADIR/part11_cap_2_threads_1.png}
+\\\includegraphics[width=8cm,height=5cm]{\FIGDIR/part11_cap_1_threads_1.png}
+\includegraphics[width=8cm,height=5cm]{\FIGDIR/part11_cap_2_threads_1.png}
 \newpage
-\\\includegraphics[width=8cm,height=5cm]{\DATADIR/part11_cap_4_threads_1.png}
-\includegraphics[width=8cm,height=5cm]{\DATADIR/part11_cap_8_threads_1.png}
-\\\includegraphics[width=8cm,height=5cm]{\DATADIR/part11_cap_16_threads_1.png}
-\includegraphics[width=8cm,height=5cm]{\DATADIR/part11_cap_32_threads_1.png}
+\\\includegraphics[width=8cm,height=5cm]{\FIGDIR/part11_cap_4_threads_1.png}
+\includegraphics[width=8cm,height=5cm]{\FIGDIR/part11_cap_8_threads_1.png}
+\\\includegraphics[width=8cm,height=5cm]{\FIGDIR/part11_cap_16_threads_1.png}
+\includegraphics[width=8cm,height=5cm]{\FIGDIR/part11_cap_32_threads_1.png}
 \\\indent We can find that when we increase the capacity, the latency becomes larger and larger which is because the parallel efficiency enhances.
 
 \subsection*{4)}

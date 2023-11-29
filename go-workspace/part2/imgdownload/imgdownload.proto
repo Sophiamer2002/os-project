@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+option go_package = "os-project/part2/imgdownload";
+
+package imgdownload;
+
+service ImgDownload {
+    rpc GetSingleImg(ImgRequest) returns (ImgResponse) {}
+    rpc GetMultiImgs(stream ImgRequest) returns (stream ImgResponse) {}
+}
+
+message ImgRequest {
+    string url = 1;
+    size sz = 2;
+}
+
+message size {
+    uint32 width = 1;
+    uint32 height = 2;
+}
+
+message ImgResponse {
+    bytes img = 1;
+    string url = 2;
+    bool success = 3;
+    string error_msg = 4;
+    reserved 5 to 10;
+    int32 ongoing_requests = 11;
+    int64 handle_latency = 12;
+    int64 inserver_latency = 13;
+}

@@ -1,0 +1,265 @@
+\documentclass{article}
+\usepackage{amsmath,amsfonts,amsthm,amssymb}
+\usepackage{setspace}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{extramarks}
+\usepackage{chngpage}
+\usepackage{soul,color}
+\usepackage{graphicx,float,wrapfig}
+\usepackage{CJK}
+\usepackage{algorithm}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usepackage{authblk}
+\usepackage{listings} 
+\newcommand{\Class}{Operating Systems and Distributed Systems}
+\newcommand{\ClassInstructor}{Wei Xu}
+
+% Homework Specific Information. Change it to your own
+\newcommand{\Title}{Project 1 Part 2.2}
+\newcommand{\DueDate}{Nov 29, 2023}
+
+% In case you need to adjust margins:
+\topmargin=-0.45in      %
+\evensidemargin=0in     %
+\oddsidemargin=0in      %
+\textwidth=6.5in        %
+\textheight=9.0in       %
+\headsep=0.25in         %
+
+% Setup the header and footer
+\pagestyle{fancy}                                                 %
+\chead{\Title}  %                                                  %
+\cfoot{}                                                                %
+\rfoot{Page\ \thepage\ of\ \protect\pageref{LastPage}}                  %
+\renewcommand\headrulewidth{0.4pt}                                      %
+\renewcommand\footrulewidth{0.4pt}                                      %
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Make title
+\title{\textmd{\bf \Title}\\{\large Instructed by \textit{\ClassInstructor}}\\\normalsize\vspace{0.1in}\small{Due\ on\ \DueDate}}
+\date{}
+\newcommand*{\affaddr}[1]{#1} % No op here. Customize it for different styles.
+\newcommand*{\affmark}[1][*]{\textsuperscript{#1}}
+\newcommand*{\email}[1]{\texttt{#1}}
+
+\author{%
+Fangyan Shi\affmark[1], Chengda Lu\affmark[2], and Yiying Wang\affmark[3]\\
+\affaddr{\affmark[1]2021010892 \affmark[2]2021010899 \affmark[3]2020011604}\\
+\email{\{\affmark[1]sfy21,\affmark[2]lucd21,\affmark[3]wangyiyi20\}@mails.tsinghua.edu.cn}\\
+}
+ 
+\renewcommand\Authands{ and }
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\begin{spacing}{1.1}
+\maketitle \thispagestyle{empty}
+
+\newcommand{\FIGDIR}{} % This is to be filled by makefile
+
+\section{Experiment Framework}
+
+In this part, we reuse the protoc object definition for GetSingleImg interface when defining GetMultiImgs. However, we use stream gRPC so that we can send a batch of image requests once a time. As we can see from the result in part 1, there isn't much difference between using single process or multiple processes, given that the total working threads is constant. Therefore, we build client22 by using a single process, and the process has several threads requesting for different servers. We elaborate how to use client22 below.
+
+\begin{itemize}
+    \setlength\itemsep{1pt}
+    \item \textbf{-n-t=}: Number of requesting threads for each single server.
+    \item \textbf{-n-s=}: Number of servers.
+    \item \textbf{-host=}: The server address. For multiple servers, simply use \textbf{-host=... -host=...} and the number of \textbf{-host} shall match the number of servers provided by \textbf{-n-s}.
+    \item \textbf{-batch-size=}: The number of image requests sent at a time.
+    \item \textbf{-stats-file=}: File to store the statistics information.
+\end{itemize}
+
+
+\section{Performance Analysis}
+
+We conducted four experiment sets and below are the details.
+
+\subsection{Experiment Set 1}
+
+In experiment set 1, we fix the server number as 1, which is the single server mode. We change the number of client threads for each server(We use a fixed amount for each server) to see how the performance changes. We also show the plots for different batch sizes. Note that the server threads is always 24, which equals to the number of CPUs. See Fig 1 for the experiment results. We can conclude from the figures that 
+\begin{itemize}
+    \setlength\itemsep{1pt}
+    \item When batch size goes higher, the throughput also goes higher. The batch size has a similar impact on performance as the number of client threads in part21. 
+    \item Using steam gRPC will add to network latency in a great extent. 
+    \item When batch size is too large, the requests will flood the server and latency will increase a lot, which is similar to the phenomenon when client threads is more than server threads in part21.
+\end{itemize}
+
+\begin{figure}[htbp]
+    \centering
+    \begin{minipage}{0.32\linewidth}
+        \centering
+	\includegraphics[width=0.9\linewidth]{\FIGDIR/part22-throughput1.png}
+	\label{throuput1}
+    \end{minipage}
+	%\qquad
+    \begin{minipage}{0.32\linewidth}
+        \centering
+        \includegraphics[width=0.9\linewidth]{\FIGDIR/part22-latency1.png}
+        \label{latency1}
+    \end{minipage}
+    \begin{minipage}{0.32\linewidth}
+        \centering
+        \includegraphics[width=0.9\linewidth]{\FIGDIR/part22-network_latency1.png}
+        \label{network-latency1}
+    \end{minipage} \\
+    \begin{minipage}{0.32\linewidth}
+        \centering
+        \includegraphics[width=0.9\linewidth]{\FIGDIR/part22-network_latency_std1.png}
+        \label{queue-latency1}
+    \end{minipage}
+    \begin{minipage}{0.32\linewidth}
+        \centering
+        \includegraphics[width=0.9\linewidth]{\FIGDIR/part22-latency_std1.png}
+        \label{latency-std1}
+    \end{minipage}
+    %\qquad
+    \begin{minipage}{0.32\linewidth}
+        \centering
+        \includegraphics[width=0.9\linewidth]{\FIGDIR/part22-queue_length1.png}
+        \label{queue-length1}
+    \end{minipage}
+    \label{experiment1}
+    \caption{Experiment set 1 results}
+\end{figure}
+
+\subsection{Experiment Set 2}
+In experiment set 2, we fix the batch size to be 1, which is similar to GetSingleImg. We also plot the performance vs. number of client threads for each server. However, we compare different number of servers in one plot.
+We can conclude from the plots that 
+\begin{itemize}
+    \item Adding more servers will not hurt latency at all. 
+    \item Adding servers will provide a good speedup. As shown in the fourth figure in Fig 2, we plot $\textbf{Speed Up}/\textbf{Server number}$. The increase of hosts will not hurt the indicator a lot. We believe that adding hosts will increase the performance a lot, almost in a theoretically best way.
+\end{itemize}
+\begin{figure}[htbp]
+    \centering
+    \begin{minipage}{0.32\linewidth}
+        \centering
+	\includegraphics[width=0.9\linewidth]{\FIGDIR/part22-throughput2.png}
+	\label{throuput2}
+    \end{minipage}
+	%\qquad
+    \begin{minipage}{0.32\linewidth}
+        \centering
+        \includegraphics[width=0.9\linewidth]{\FIGDIR/part22-latency2.png}
+        \label{latency2}
+    \end{minipage}
+    \begin{minipage}{0.32\linewidth}
+        \centering
+        \includegraphics[width=0.9\linewidth]{\FIGDIR/part22-network_latency2.png}
+        \label{network-latency2}
+    \end{minipage} \\
+    \begin{minipage}{0.32\linewidth}
+        \centering
+        \includegraphics[width=0.9\linewidth]{\FIGDIR/part22-speed_up2.png}
+        \label{queue-latency2}
+    \end{minipage}
+    %\qquad
+    \begin{minipage}{0.32\linewidth}
+        \centering
+        \includegraphics[width=0.9\linewidth]{\FIGDIR/part22-latency_std2.png}
+        \label{latency-std2}
+    \end{minipage}
+    \begin{minipage}{0.32\linewidth}
+        \centering
+        \includegraphics[width=0.9\linewidth]{\FIGDIR/part22-queue_length2.png}
+        \label{queue-length2}
+    \end{minipage}
+    \caption{Experiment set 2 results}
+\end{figure}
+
+\subsection{Experiment Set 3}
+In experiment set 3, we fix the following indicator 
+\[
+\textbf{client threads per server} \times \textbf{number of servers} \times\textbf{batch size}
+\]
+to be 16, which is viewed as the degree of parallelism. We plot the performance vs. batch size, and draws the following conclusions:
+\begin{itemize}
+\setlength\itemsep{1pt}
+    \item The degree of parallelism provided has the following relationship:
+    \[
+\textbf{batch size} < \textbf{client threads per server}< \textbf{number of servers} 
+\]
+\item The latency given has the following relationship:
+    \[\textbf{number of servers}  <
+\textbf{batch size} < \textbf{client threads per server}
+\]
+\end{itemize}
+
+\begin{figure}[htbp]
+    \centering
+    \begin{minipage}{0.32\linewidth}
+        \centering
+	\includegraphics[width=0.9\linewidth]{\FIGDIR/part22-throughput3.png}
+	\label{throuput3}
+    \end{minipage}
+	%\qquad
+    \begin{minipage}{0.32\linewidth}
+        \centering
+        \includegraphics[width=0.9\linewidth]{\FIGDIR/part22-latency3.png}
+        \label{latency3}
+    \end{minipage}
+    \begin{minipage}{0.32\linewidth}
+        \centering
+        \includegraphics[width=0.9\linewidth]{\FIGDIR/part22-network_latency3.png}
+        \label{network-latency3}
+    \end{minipage} \\
+    \begin{minipage}{0.32\linewidth}
+        \centering
+        \includegraphics[width=0.9\linewidth]{\FIGDIR/part22-network_latency_std3.png}
+        \label{queue-latency3}
+    \end{minipage}
+    %\qquad
+    \begin{minipage}{0.32\linewidth}
+        \centering
+        \includegraphics[width=0.9\linewidth]{\FIGDIR/part22-latency_std3.png}
+        \label{latency-std3}
+    \end{minipage}
+    \begin{minipage}{0.32\linewidth}
+        \centering
+        \includegraphics[width=0.9\linewidth]{\FIGDIR/part22-network_latency_std3.png}
+        \label{networkk-latency-std3}
+    \end{minipage}
+    \caption{Experiment set 3 results}
+\end{figure}
+
+
+\subsection{Experiment Set 4}
+In this experiment set, we mainly compare the statistics of different servers when batch size, number of servers and client threads per server are all set to be 4. We originally expect to see whether the load is balanced between servers with different performance. However, the different servers behave quite similar. However, we can see that server with higher latency has less throughput, which means that it receives less requests. It seems that the client can dynamically give more work to quicker server.
+\begin{figure}[htbp]
+    \centering
+    \begin{minipage}{0.32\linewidth}
+        \centering
+	\includegraphics[width=0.9\linewidth]{\FIGDIR/part22-throughput4.png}
+	\label{throuput4}
+    \end{minipage}
+	%\qquad
+    \begin{minipage}{0.32\linewidth}
+        \centering
+        \includegraphics[width=0.9\linewidth]{\FIGDIR/part22-latency4.png}
+        \label{latency4}
+    \end{minipage}
+    \begin{minipage}{0.32\linewidth}
+        \centering
+        \includegraphics[width=0.9\linewidth]{\FIGDIR/part22-network_latency4.png}
+        \label{network-latency4}
+    \end{minipage} \\
+    %\qquad
+    \begin{minipage}{0.32\linewidth}
+        \centering
+        \includegraphics[width=0.9\linewidth]{\FIGDIR/part22-latency_std4.png}
+        \label{latency-std4}
+    \end{minipage}
+    \begin{minipage}{0.32\linewidth}
+        \centering
+        \includegraphics[width=0.9\linewidth]{\FIGDIR/part22-handle_latency4.png}
+        \label{handle-latency4}
+    \end{minipage}
+    \caption{Experiment set 4 results}
+\end{figure}
+
+\end{spacing}
+\end{document}

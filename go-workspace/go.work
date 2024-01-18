@@ -1,8 +1,8 @@
 go 1.20
 
 use (
+	./SophiaCoin
 	./part11
 	./part12
 	./part2
-	./test-grpc
 )

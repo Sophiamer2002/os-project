@@ -55,6 +55,29 @@ We have the client codes for this part in `./go-workspace/part2/cmd/client21`. W
 
 Run `make part22 IMG_DIR=/path/to/downloaded/image` and you will get `part22.pdf` in the root directory. The framework is almost the same as part21.
 
-## Project 2: Implement a Blockchain!
+## Project 2: SophiaCoin: Implement a Blockchain!
 
 <!-- TODO -->
+
+Run `make $(pwd)/temp/daemon` and `make $(pwd)/temp/client` to build the miner and client process respectively. You will find the processes in `./temp` folder.
+
+Miner process parameters:
++ -ip: The ip address it listens to.
++ -port: The port it listens to.
++ -dir: The directory where it stores keys and block data.
++ -difficulty: The difficulty of proof of work.
++ -peer: The peer miner address it connects to. You can use it multiple times. For example, you can use `-peer=10.1.0.112:8062 -peer=10.1.0.112:8063`.
+
+
+Client process parameters:
++ -daemon: The miner process's address it connects to.
++ -ip: The ip address it listens to.
++ -port: The port it listens to.
++ -dir: The directory where it stores keys.
+
+
+If you run the miner process, you will find under the directory you use, there is a `blocks` directory where `Block*.dat` is stored. Run `make $(pwd)/temp/parser` and 
+```bash
+./temp/parser -file (directory to save coin data)/blocks/Block1.dat
+```
+It will show you the block information in JSON format.

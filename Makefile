@@ -282,3 +282,19 @@ $(CURDIR)/part22.pdf: $(TEX_DIR)/part22.tex
 	mv $(TEMP_DIR)/part22.pdf $@
 
 
+$(GO_DIR)/SophiaCoin/pkg/rpc/broadcast.pb.go: $(GO_DIR)/SophiaCoin/pkg/rpc/broadcast.proto
+	cd $(GO_DIR)/SophiaCoin/pkg/rpc && protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative broadcast.proto
+
+$(GO_DIR)/SophiaCoin/pkg/rpc/broadcast_grpc.pb.go: $(GO_DIR)/SophiaCoin/pkg/rpc/broadcast.proto
+	cd $(GO_DIR)/SophiaCoin/pkg/rpc && protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative broadcast.proto
+
+SophiaCoinDependency := $(wildcard $(GO_DIR)/SophiaCoin/pkg/*/*.go) $(GO_DIR)/SophiaCoin/pkg/rpc/broadcast.pb.go $(GO_DIR)/SophiaCoin/pkg/rpc/broadcast_grpc.pb.go
+
+$(TEMP_DIR)/daemon: $(GO_DIR)/SophiaCoin/cmd/daemon/*.go $(SophiaCoinDependency)
+	cd $(GO_DIR)/SophiaCoin/cmd/daemon && go mod tidy && go build -o $(TEMP_DIR)/daemon
+
+$(TEMP_DIR)/client: $(GO_DIR)/SophiaCoin/cmd/client/*.go $(SophiaCoinDependency)
+	cd $(GO_DIR)/SophiaCoin/cmd/client && go mod tidy && go build -o $(TEMP_DIR)/client
+
+$(TEMP_DIR)/parser: $(GO_DIR)/SophiaCoin/cmd/parser/*.go $(SophiaCoinDependency)
+	cd $(GO_DIR)/SophiaCoin/cmd/parser && go mod tidy && go build -o $(TEMP_DIR)/parser

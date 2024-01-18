@@ -1,6 +1,7 @@
 /temp/
 *.pdf
 .vscode/
+bin/
 
 # Ignore protobuf generated files
 *.pb.go

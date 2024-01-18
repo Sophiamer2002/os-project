@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+option go_package = "os-project/SophiaCoin/pkg/rpc";
+
+package rpc;
+
+service BroadcastService {
+    rpc BroadcastTransaction(Transaction) returns (google.protobuf.Empty) {}
+    rpc BroadcastBlock(stream Block) returns (stream BlockRequest) {}
+    rpc RequestTransactionsByPublicKey(TransactionRequestByPublicKey) returns (stream TransactionInfo) {}
+    rpc ConstructTransaction(TransactionConstruct) returns (Transaction) {}
+    rpc Handshake(Address) returns (Address) {}
+}
+
+message Address {
+    string ip = 1;
+    string port = 2;
+}
+
+message TransactionRequestByPublicKey {
+    uint32 block_height = 1;
+    bytes block_hash = 2;
+    bytes public_key = 3;
+}
+
+message Block {
+    bytes block = 1;
+    uint32 block_height = 2;
+    bool header_only = 3;
+}
+
+message BlockRequest {
+    uint32 block_height = 1;
+    bool header_only = 2;
+}
+
+message Transaction {
+    bytes transaction = 1;
+}
+
+message TransactionInfo {
+    uint32 block_height = 1;
+    bytes block_hash = 2;
+    uint32 transaction_index = 3;
+    bytes transaction = 4;
+    uint32 in_out_idx = 5;
+    bool is_tx_in = 6;
+    uint64 amount = 7;
+    bytes merkleProof = 8;
+}
+
+message TransactionConstruct {
+    bytes send_addr = 1;
+    bytes recv_addr = 2;
+    uint64 amount = 3;
+    uint64 fee = 4;
+}

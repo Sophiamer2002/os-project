@@ -117,6 +117,10 @@ func (pool *Mempool) AddTransaction(tx *pri.Transaction) error {
 	pool.lock.Lock()
 	defer pool.lock.Unlock()
 
+	if _, ok := pool.pendingTxs[pri.Hash(tx)]; ok {
+		return fmt.Errorf("mempool.Mempool.AddTransaction: Transaction already exists")
+	}
+
 	transactions := []pri.Transaction{*tx}
 	for _, tx := range pool.pendingTxs {
 		transactions = append(transactions, *tx)

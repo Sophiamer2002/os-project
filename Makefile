@@ -49,6 +49,8 @@ part22:
 	make stop_server
 	make $(CURDIR)/part22.pdf
 
+SophiaCoin: $(TEMP_DIR)/daemon $(TEMP_DIR)/client $(TEMP_DIR)/parser $(CURDIR)/project2.pdf
+
 clean:
 	rm -rf $(TEMP_DIR)
 
@@ -298,3 +300,13 @@ $(TEMP_DIR)/client: $(GO_DIR)/SophiaCoin/cmd/client/*.go $(SophiaCoinDependency)
 
 $(TEMP_DIR)/parser: $(GO_DIR)/SophiaCoin/cmd/parser/*.go $(SophiaCoinDependency)
 	cd $(GO_DIR)/SophiaCoin/cmd/parser && go mod tidy && go build -o $(TEMP_DIR)/parser
+
+$(CURDIR)/project2.pdf: $(TEX_DIR)/project2.tex $(TEX_DIR)/ref.bib
+	cp $^ $(TEMP_DIR)
+	cp $(TEX_DIR)/fig/* $(FIG_DIR)
+	sed -i 's/\\newcommand{\\FIGDIR}{.*}/\\newcommand{\\FIGDIR}{$(subst /,\/,$(FIG_DIR))}/g' $(TEMP_DIR)/project2.tex
+	-pdflatex $(TEX_FLAGS) $(TEMP_DIR)/project2.tex > /dev/null 2>&1
+	-cd $(TEMP_DIR); bibtex project2 > /dev/null 2>&1
+	-pdflatex $(TEX_FLAGS) $(TEMP_DIR)/project2.tex > /dev/null 2>&1
+	-pdflatex $(TEX_FLAGS) $(TEMP_DIR)/project2.tex > /dev/null 2>&1
+	mv $(TEMP_DIR)/project2.pdf $@
